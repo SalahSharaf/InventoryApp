@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             String supplier_name= cursor.getString(cursor.getColumnIndex(productContract.ProductEntry.COLUMN_PRODUCT_Supplier_NAME));
 
             String supplier_phone= cursor.getString(cursor.getColumnIndex(productContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE));
-            textView.append("\n " +id+"-"+name+"-"+price+"-"+quantity+"-"+supplier_name+"-"+supplier_phone);
+            textView.append("\n " +id+" - "+name+" - "+price+" - "+quantity+" - "+supplier_name+" - "+supplier_phone);
 
         }
     }
