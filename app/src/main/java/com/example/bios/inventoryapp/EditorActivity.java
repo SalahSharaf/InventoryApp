@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bios.inventoryapp.Data.ProductOpenHelper;
@@ -66,8 +65,9 @@ public class EditorActivity extends AppCompatActivity {
                 Toast.makeText(this, "New Instance added ", Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(this,MainActivity.class);
                 startActivity(intent);
+            }else{
+                Toast.makeText(this,"make sure to fill all data fields correctly ",Toast.LENGTH_SHORT).show();
             }
-
 
         }catch (NumberFormatException e){
             e.getMessage();

@@ -32,9 +32,16 @@ public class MainActivity extends AppCompatActivity {
         });
         openHelper=new ProductOpenHelper(this);
         textView=findViewById(R.id.instances);
-        ReadTask();
+        readTask();
     }
-    public void ReadTask(){
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        readTask();
+    }
+
+    public void readTask(){
         SQLiteDatabase db=openHelper.getReadableDatabase();
         String[] projection={
                 productContract.ProductEntry.COLUMN_ID,
@@ -61,5 +68,6 @@ public class MainActivity extends AppCompatActivity {
             textView.append("\n " +id+" - "+name+" - "+price+" - "+quantity+" - "+supplier_name+" - "+supplier_phone);
 
         }
+        cursor.close();
     }
 }
