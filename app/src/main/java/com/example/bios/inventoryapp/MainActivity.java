@@ -1,22 +1,35 @@
 package com.example.bios.inventoryapp;
 
+import android.app.LoaderManager;
+import android.content.ContentUris;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bios.inventoryapp.Data.ProductOpenHelper;
 import com.example.bios.inventoryapp.Data.productContract;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     ProductOpenHelper openHelper;
     FloatingActionButton btn;
-    TextView textView;
+    ListView listView;
+    int LOADER_ID=1;
+    MyCursorAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,43 +44,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         openHelper=new ProductOpenHelper(this);
-        textView=findViewById(R.id.instances);
-        readTask();
+        listView=findViewById(R.id.listView);
+        TextView emptyCaseText=findViewById(R.id.textview);
+        listView.setEmptyView(emptyCaseText);
+        adapter = new MyCursorAdapter(this,null);
+        listView.setAdapter(adapter);
+        getLoaderManager().initLoader(LOADER_ID,null,this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        readTask();
+        getLoaderManager().restartLoader(LOADER_ID,null,this);
     }
 
-    public void readTask(){
-        SQLiteDatabase db=openHelper.getReadableDatabase();
-        String[] projection={
-                productContract.ProductEntry.COLUMN_ID,
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = {
+                productContract.ProductEntry._ID,
                 productContract.ProductEntry.COLUMN_PRODUCT_NAME,
                 productContract.ProductEntry.COLUMN_PRODUCT_PRICE,
                 productContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
-                productContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE,
-                productContract.ProductEntry.COLUMN_PRODUCT_Supplier_NAME
-        };
-        Cursor cursor=db.query(productContract.ProductEntry.TABLE_NAME,projection,null,null,null,null,null);
-        textView.setText("number of instances = " + cursor.getCount());
-        textView.append("\n id-name-price-quantity-supplier name-supplier phone");
+                productContract.ProductEntry.COLUMN_PRODUCT_Supplier_NAME,
+                productContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE};
 
-        while (cursor.moveToNext()){
-            int id= cursor.getInt(cursor.getColumnIndex(productContract.ProductEntry.COLUMN_PRODUCT_NAME));
-            String name= cursor.getString(cursor.getColumnIndex(productContract.ProductEntry.COLUMN_ID));
-
-            int price= cursor.getInt(cursor.getColumnIndex(productContract.ProductEntry.COLUMN_PRODUCT_PRICE));
-            int quantity= cursor.getInt(cursor.getColumnIndex(productContract.ProductEntry.COLUMN_PRODUCT_QUANTITY));
-
-            String supplier_name= cursor.getString(cursor.getColumnIndex(productContract.ProductEntry.COLUMN_PRODUCT_Supplier_NAME));
-
-            String supplier_phone= cursor.getString(cursor.getColumnIndex(productContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE));
-            textView.append("\n " +id+" - "+name+" - "+price+" - "+quantity+" - "+supplier_name+" - "+supplier_phone);
-
-        }
-        cursor.close();
+        return new CursorLoader(this, productContract.ProductEntry.CONTENT_URI, projection, null, null, null);
     }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        adapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        //adapter.swapCursor(null);
+    }
+
 }

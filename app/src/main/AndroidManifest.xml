@@ -16,7 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EditorActivity"></activity>
+        <activity android:name=".EditorActivity"  android:theme="@style/Theme.AppCompat"/>
+
+        <provider
+            android:name=".Data.ProductProvider"
+            android:authorities="com.example.bios.inventoryapp"
+            android:exported="false" />
+
+        <activity android:name=".ProductDetails"></activity>
     </application>
 
 </manifest>

@@ -1,8 +1,11 @@
 package com.example.bios.inventoryapp;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,7 +31,7 @@ public class EditorActivity extends AppCompatActivity {
         editQuantity = findViewById(R.id.edit3);
         editSupplierName = findViewById(R.id.edit4);
         editSupplierPhone = findViewById(R.id.edit5);
-        openHelper=new ProductOpenHelper(this);
+        openHelper = new ProductOpenHelper(this);
     }
 
     @Override
@@ -52,26 +55,50 @@ public class EditorActivity extends AppCompatActivity {
         String quantity = editQuantity.getText().toString();
         String supplierName = editSupplierName.getText().toString();
         String supplierPhone = editSupplierPhone.getText().toString();
+        ContentValues values = new ContentValues();
         try {
-            SQLiteDatabase db = openHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
             values.put(productContract.ProductEntry.COLUMN_PRODUCT_NAME, name);
             values.put(productContract.ProductEntry.COLUMN_PRODUCT_PRICE, Integer.valueOf(price));
             values.put(productContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, Integer.valueOf(quantity));
             values.put(productContract.ProductEntry.COLUMN_PRODUCT_Supplier_NAME, supplierName);
             values.put(productContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE, supplierPhone);
-            long get = db.insert(productContract.ProductEntry.TABLE_NAME, null, values);
-            if (get != -1) {
-                Toast.makeText(this, "New Instance added ", Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(this,MainActivity.class);
-                startActivity(intent);
-            }else{
-                Toast.makeText(this,"make sure to fill all data fields correctly ",Toast.LENGTH_SHORT).show();
-            }
-
-        }catch (NumberFormatException e){
+            getContentResolver().insert(productContract.ProductEntry.CONTENT_URI,values);
+        } catch (NumberFormatException e) {
             e.getMessage();
+        }catch (IllegalArgumentException ex){ }
+        if(name!=null&&price!=null&&quantity!=null&&supplierName!=null&&supplierPhone!=null) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }else {
+            Toast.makeText(this,"make sure to fill all data fields",Toast.LENGTH_SHORT).show();
         }
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (editName.getText() != null || editPrice.getText() != null || editQuantity.getText() != null || editSupplierName.getText() != null || editSupplierPhone.getText() != null) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage("are you sure you want to close before finishing ?.");
+            builder1.setCancelable(true);
+            builder1.setIcon(R.drawable.ic_warning_black_24dp);
+            builder1.setPositiveButton(
+                    "Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    "No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
     }
 }
