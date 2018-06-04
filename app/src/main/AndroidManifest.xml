@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EditorActivity"  android:theme="@style/Theme.AppCompat"/>
+        <activity android:name=".EditorActivity"  />
 
         <provider
             android:name=".Data.ProductProvider"
