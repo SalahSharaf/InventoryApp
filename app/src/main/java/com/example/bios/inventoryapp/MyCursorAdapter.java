@@ -55,7 +55,6 @@ public class MyCursorAdapter extends CursorAdapter  {
         sale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor cursor1= (Cursor) v.getTag();
                 if (quantitye[0] == 0) {
                     Toast.makeText(context, "Item is out of Stock!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -63,7 +62,7 @@ public class MyCursorAdapter extends CursorAdapter  {
                     ContentValues values = new ContentValues();
                     values.put(productContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, quantitye[0]);
                     quantity.setText(quantitye[0] + "");
-                    Uri currentItemUri = Uri.withAppendedPath(productContract.ProductEntry.CONTENT_URI, getItemId(cursor1.getPosition()) +"");
+                    Uri currentItemUri = Uri.withAppendedPath(productContract.ProductEntry.CONTENT_URI, getItemId(cursor.getPosition()) +"");
                     context.getContentResolver().update(currentItemUri, values,null,null);
                 }
             }
@@ -72,9 +71,8 @@ public class MyCursorAdapter extends CursorAdapter  {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor mcursor= (Cursor) v.getTag();
                 Intent intent = new Intent(context,ProductDetails.class);
-                long itemId = getItemId(mcursor.getPosition());
+                long itemId = getItemId(cursor.getPosition());
                 intent.putExtra(ITEM_INDEX,itemId + "");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
