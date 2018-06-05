@@ -4,6 +4,7 @@ import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,14 +26,17 @@ public class ProductDetails extends AppCompatActivity implements LoaderManager.L
 
     Uri uri;
     TextView nameE, priceE, quantityE, supplierNameE, supplierPhoneE;
-    ImageButton increment, decrement, contact,delete2;
+    ImageButton increment, decrement, contact, delete2;
     int LOADER_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
-        uri = getIntent().getData();
+
+        String data = getIntent().getStringExtra(MyCursorAdapter.ITEM_INDEX);
+        long id = new Long(data);
+        uri=ContentUris.withAppendedId(productContract.ProductEntry.CONTENT_URI,id);
         nameE = findViewById(R.id.product_name);
         priceE = findViewById(R.id.product_price);
         quantityE = findViewById(R.id.product_quantity);
@@ -40,11 +44,28 @@ public class ProductDetails extends AppCompatActivity implements LoaderManager.L
         supplierPhoneE = findViewById(R.id.supplier_phone);
         increment = findViewById(R.id.increment);
         decrement = findViewById(R.id.decrement);
-        delete2=findViewById(R.id.deletebtn2);
+        delete2 = findViewById(R.id.deletebtn2);
+        delete2.setTag((Context)this);
         delete2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteTask();
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setIcon(R.drawable.ic_warning_black_24dp);
+                builder.setTitle("Are you sure ?");
+                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteTask();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
         contact = findViewById(R.id.contact);
@@ -64,12 +85,14 @@ public class ProductDetails extends AppCompatActivity implements LoaderManager.L
         return new CursorLoader(this,
                 uri, projection, null, null, null);
     }
-    public  void deleteTask(){
+
+    public void deleteTask() {
         getContentResolver().delete(uri, null, null);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
     }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data == null || data.getCount() < 1) {
@@ -91,7 +114,6 @@ public class ProductDetails extends AppCompatActivity implements LoaderManager.L
             int quantity = data.getInt(quantityindex);
             String supplierName = data.getString(suppliernameindex);
             String supplierPhone = data.getString(supplierphoneindex);
-
 
             // Update the views on the screen with the values from the database
             nameE.setText(name);
@@ -146,7 +168,9 @@ public class ProductDetails extends AppCompatActivity implements LoaderManager.L
                     String supplierPhone = data.getString(supplierphoneindex);
                     String editvalue = quantityE.getText().toString();
                     Integer newvalue = new Integer(editvalue);
-                    newvalue -= 1;
+                    if (newvalue != 0) {
+                        newvalue -= 1;
+                    }
                     quantityE.setText(String.valueOf(newvalue));
                     ContentValues values = new ContentValues();
                     values.put(productContract.ProductEntry.COLUMN_PRODUCT_NAME, name);

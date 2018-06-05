@@ -4,103 +4,122 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductDetails"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    tools:context=".ProductDetails">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/product_name"/>
+            android:text="@string/product_name" />
+
         <TextView
-            android:text="asdsd"
-            android:layout_marginLeft="20dp"
             android:id="@+id/product_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="asdsd" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/product_peice"/>
+            android:text="@string/product_peice" />
+
         <TextView
-            android:text="asdsd"
-            android:layout_marginLeft="20dp"
             android:id="@+id/product_price"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="asdsd" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/product_quantity"/>
+            android:text="@string/product_quantity" />
+
         <ImageButton
             android:id="@+id/decrement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_exposure_neg_1_black_24dp"/>
+            android:src="@drawable/ic_exposure_neg_1_black_24dp" />
+
         <TextView
-            android:text="asdsd"
-            android:layout_marginLeft="20dp"
             android:id="@+id/product_quantity"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="asdsd" />
+
         <ImageButton
             android:id="@+id/increment"
-            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_exposure_plus_1_black_24dp"/>
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_exposure_plus_1_black_24dp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/supplier_name"/>
+            android:text="@string/supplier_name" />
+
         <TextView
-            android:text="asdsd"
-            android:layout_marginLeft="20dp"
             android:id="@+id/supplier_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="asdsd" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/supplier_phone"/>
+            android:text="@string/supplier_phone" />
+
         <TextView
-            android:text="asdsd"
-            android:layout_marginLeft="20dp"
             android:id="@+id/supplier_phone"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:autoLink="phone"
-            android:layout_height="wrap_content" />
+            android:text="asdsd" />
+
         <ImageButton
             android:id="@+id/contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_contact_phone_black_24dp"/>
+            android:src="@drawable/ic_contact_phone_black_24dp" />
     </LinearLayout>
+
     <ImageButton
         android:id="@+id/deletebtn2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/ic_close_black_24dp"/>
+        android:src="@drawable/ic_close_black_24dp" />
 </LinearLayout>

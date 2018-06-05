@@ -66,7 +66,7 @@ public class EditorActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             e.getMessage();
         }catch (IllegalArgumentException ex){ }
-        if(name!=null&&price!=null&&quantity!=null&&supplierName!=null&&supplierPhone!=null) {
+        if(!name.equals("")&&!price.equals("")&&!quantity.equals("")&&!supplierName.equals("")&&!supplierPhone.equals("")) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else {

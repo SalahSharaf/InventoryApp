@@ -111,22 +111,22 @@ public class ProductProvider extends ContentProvider {
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         SQLiteDatabase database = helper.getWritableDatabase();
         int match = matcher.match(uri);
-        int id=0;
+        int id = 0;
 
         switch (match) {
             case CODE:
                 id = database.delete(productContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case CODE_ID:
-                selection= productContract.ProductEntry._ID+"=?";
-                selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
-                id =database.delete(productContract.ProductEntry.TABLE_NAME,selection,selectionArgs);
+                selection = productContract.ProductEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                id = database.delete(productContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
-                throw  new IllegalArgumentException("couldn't delete ");
+                throw new IllegalArgumentException("couldn't delete ");
         }
-        if(id!=0){
-            getContext().getContentResolver().notifyChange(uri,null);
+        if (id != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
         }
         return id;
     }
@@ -163,7 +163,7 @@ public class ProductProvider extends ContentProvider {
         // check that the gender value is valid.
         if (values.containsKey(productContract.ProductEntry.COLUMN_PRODUCT_PRICE)) {
             Integer price = values.getAsInteger(productContract.ProductEntry.COLUMN_PRODUCT_PRICE);
-            if (price == null) {
+            if (price == null && price > 0) {
                 throw new IllegalArgumentException("product requires valid price");
             }
         }
